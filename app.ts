@@ -1,14 +1,11 @@
-function add(n1: number, n2: number, showResult: boolean, phrase: string) {
-    const result = n1 + n2;
-    if (showResult) {
-        console.log(phrase + result);
-    }
-    return n1 + n2;
-}
+// Explicitly declaring specific object type with typed key/value pairs; not good practice but left as demonstration. Better to just let Typescript infer type
+/* const person: {
+    name: string;
+    age: number;
+} = { */
+const person = {
+    name: 'Benjamin',
+    age: 33,
+};
 
-const number1 = 5;
-const number2 = 2.8;
-const printResult = true;
-const resultPhrase = 'Result is: ';
-
-const result = add(number1, number2, printResult, resultPhrase);
+console.log(person.name);
