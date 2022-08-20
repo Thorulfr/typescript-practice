@@ -3,11 +3,24 @@
     name: string;
     age: number;
 } = { */
-const person = {
+const person: {
+    name: string;
+    age: number;
+    hobbies: string[];
+    // This line defines role as a tuple, a very specific type of array
+    role: [number, string];
+} = {
     name: 'Benjamin',
     age: 33,
     hobbies: ['Guitar', 'Cooking', 'Languages', 'Music'],
+    role: [1, 'Guitarist'],
 };
+
+// This works, even though it seems like it shouldn't -- .push() on a tuple is not enforced by TS
+// person.role.push('admin');
+// These, however, do not work -- because it doesn't match the tuple definition we set above
+// person.role[1] = 10;
+// person.role = [0, 'admin', 'user']
 
 let favoriteActivities: string[];
 favoriteActivities = ['Playing guitar'];
