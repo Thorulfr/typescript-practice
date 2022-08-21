@@ -41,6 +41,8 @@ const person = {
 // person.role = [0, 'admin', 'user']
 
 let favoriteActivities: string[];
+// let favoriteActivities: any; -> Tells Typescript anything can go in here and not to infer a type
+// let favoriteActivities: any[]; -> Tells TS we at least want this to be an array, even if anything can go inside it
 favoriteActivities = ['Playing guitar'];
 
 console.log(person.name);
