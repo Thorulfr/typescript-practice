@@ -3,7 +3,7 @@
     name: string;
     age: number;
 } = { */
-const person: {
+/* const person: {
     name: string;
     age: number;
     hobbies: string[];
@@ -14,6 +14,24 @@ const person: {
     age: 33,
     hobbies: ['Guitar', 'Cooking', 'Languages', 'Music'],
     role: [1, 'Guitarist'],
+}; */
+
+// Enum creates a custom type (Role here) that assigns numbers to each of these labels, so 0 = ADMIN, 1 = READ_ONLY, etc.
+enum Role {
+    ADMIN,
+    // ADMIN = 5, -> This assigns the starting number to 5, so READ_ONLY will be 6, etc.
+    // ADMIN = 'ADMIN', -> We're not just limited to numbers, we can also use strings or even mix strings and numbers
+    READ_ONLY,
+    // READ_ONLY = 100, -> We can assign individual numbers to each label if we want
+    AUTHOR,
+}
+
+const person = {
+    name: 'Benjamin',
+    age: 33,
+    hobbies: ['Guitar', 'Cooking', 'Languages', 'Music'],
+    // The below code assigns the role to '0'; enums allow us to use human-friendly language in our code
+    role: Role.ADMIN,
 };
 
 // This works, even though it seems like it shouldn't -- .push() on a tuple is not enforced by TS
@@ -32,4 +50,7 @@ for (const hobby of person.hobbies) {
     // Because Typescript knows that the array will ONLY contain strings, we suddenly gain access to Javascript string methods/properties, e.g., using "toUpperCase()"
     console.log(hobby.toUpperCase());
     // console.log(hobby.map()); -- this produces an error, because .map() isn't a property of strings -- only arrays -- and since TS correctly inferred that 'hobby' will exclusively refer to strings, we can't use .map()
+}
+if (person.role === Role.ADMIN) {
+    console.log(person.name + ' is an admin');
 }
