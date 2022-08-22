@@ -11,3 +11,10 @@ if (typeof userInput === 'string') {
 
 // We get an error here if we leave userInput as an unknown type.
 // userName = userInput;
+
+// This function, for instance, NEVER returns anything -- throw just bricks the code, so rather than returning void, we can set the type to never.
+function generateError(message: string, code: number): never {
+    throw { message: message, errorCode: code };
+}
+
+generateError('An error occurred!', 500);
