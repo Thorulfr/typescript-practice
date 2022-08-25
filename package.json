@@ -1,27 +1,19 @@
 {
-    "name": "typescript-practice",
+    "name": "understanding-typescript",
     "version": "1.0.0",
-    "description": "A repository to hold various Typescript practice projects.",
+    "description": "Understanding TypeScript Course Setup",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "lite-server"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Thorulfr/typescript-practice.git"
-    },
     "keywords": [
         "typescript",
-        "javascript"
+        "course"
     ],
-    "author": "Benjamin Holt",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/Thorulfr/typescript-practice/issues"
-    },
-    "homepage": "https://github.com/Thorulfr/typescript-practice#readme",
+    "author": "Maximilian Schwarzmüller",
+    "license": "ISC",
     "devDependencies": {
-        "lite-server": "^2.6.1"
+        "lite-server": "^2.5.4"
     }
 }

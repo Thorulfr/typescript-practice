@@ -1,3 +1,1 @@
-const firstName = 'Benjamin';
-
-console.log(firstName);
+// Code goes here!
