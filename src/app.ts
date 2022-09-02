@@ -21,22 +21,40 @@ class Department {
     }
 
     printEmployeeInformation() {
-        console.log(this.employees.length);
+        console.log(this.employees.length + ' employees');
         console.log(this.employees);
     }
 }
 
-const accounting = new Department('d1', 'Accounting');
+class ITDepartment extends Department {
+    admins: string[];
+    constructor(id: string, admins: string[]) {
+        // You have to call super before you're able to use the 'this' keyword
+        super(id, 'IT');
+        this.admins = admins;
+    }
+}
 
-accounting.describe();
-accounting.addEmployee('Max');
-accounting.addEmployee('Manu');
-accounting.printEmployeeInformation();
+const it = new ITDepartment('d1', ['Ben, Sterling']);
+it.describe();
+it.addEmployee('Max');
+it.addEmployee('Manu');
+it.printEmployeeInformation();
 
-/* const accountingCopy = {
-    name: 'HR',
-    describe: accounting.describe,
-};
+class AccountingDepartment extends Department {
+    constructor(id: string, private reports: string[]) {
+        super(id, 'Accounting');
+    }
 
-accountingCopy.describe();
- */
+    addReport(text: string) {
+        this.reports.push(text);
+    }
+
+    printReports() {
+        console.log(this.reports);
+    }
+}
+
+const accounting = new AccountingDepartment('d2', []);
+accounting.addReport('Something went wrong...');
+accounting.printReports();
