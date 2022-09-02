@@ -47,8 +47,28 @@ it.addEmployee('Manu');
 it.printEmployeeInformation();
 
 class AccountingDepartment extends Department {
+    private lastReport: string;
+
+    // Getters allow us to make private information publicly readable (but not writeable). Private properties are not accessible using dot notation, but getters provide us an internal method to read and display information contained in private properties.
+    get mostRecentReport() {
+        if (this.lastReport) {
+            // A getter method has to return something.
+            return this.lastReport;
+        }
+        throw new Error('No report found.');
+    }
+
+    // Setters serve the same purpose as getters, just to write to properties (rather than read them). Setters have to have arguments.
+    set mostRecentReport(value: string) {
+        if (!value) {
+            throw new Error('Please pass in a valid report.');
+        }
+        this.addReport(value);
+    }
+
     constructor(id: string, private reports: string[]) {
         super(id, 'Accounting');
+        this.lastReport = reports[0];
     }
 
     // We can override methods from the base class
@@ -62,6 +82,7 @@ class AccountingDepartment extends Department {
 
     addReport(text: string) {
         this.reports.push(text);
+        this.lastReport = text;
     }
 
     printReports() {
@@ -70,7 +91,11 @@ class AccountingDepartment extends Department {
 }
 
 const accounting = new AccountingDepartment('d2', []);
+// This is accesses like a normal property, NOT like a method
 accounting.addReport('Something went wrong...');
+console.log(accounting.mostRecentReport);
+accounting.mostRecentReport = 'Something went right!';
+console.log(accounting.mostRecentReport);
 accounting.addEmployee('Ben');
 accounting.addEmployee('Manu');
 accounting.printReports();
