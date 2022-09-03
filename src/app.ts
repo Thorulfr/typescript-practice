@@ -1,4 +1,5 @@
-class Department {
+// If you have any abstract methods in a class, you also have to make the entire class abstract.
+abstract class Department {
     // private id: string;
     // private name: string;
     // public name: string; -> This is the opposite of the 'private' modifier; this is the default, however, so you don't need to explicitly set it
@@ -9,7 +10,7 @@ class Department {
     protected employees: string[] = [];
 
     // Constructor is a method tied to this class/any instance of this class that is executed when a new object is instantiated
-    constructor(private readonly id: string, public name: string) {
+    constructor(protected readonly id: string, public name: string) {
         // The parameters above are shorthand for adding properties without dually defining them up top and here
         // this.name = n;
         // this.id = id;
@@ -21,9 +22,10 @@ class Department {
         return { name: name };
     }
 
-    describe(this: Department) {
-        console.log(`Department (${this.id}): ${this.name}`);
-    }
+    // If we leave this method empty and prefix it with 'abstract,' it REQUIRES all classes that extend this class to have a method called describe -- but since we leave this empty, we have to define the describe() method in each inheriting class. Essentially, this says "Hey, you HAVE to have a method called describe() but you have to define it yourself," forcing developers to create unique methods that meet the needs of each inheriting class.
+    // To create an abstract class, remove the curly brackets and add the return type the method should have.
+    abstract describe(this: Department): void;
+    // console.log(`Department (${this.id}): ${this.name}`);
 
     addEmployee(employee: string) {
         this.employees.push(employee);
@@ -43,6 +45,9 @@ class ITDepartment extends Department {
         // You have to call super before you're able to use the 'this' keyword
         super(id, 'IT');
         this.admins = admins;
+    }
+    describe() {
+        console.log('IT Department ID: ' + this.id);
     }
 }
 
@@ -81,6 +86,10 @@ class AccountingDepartment extends Department {
         this.lastReport = reports[0];
     }
 
+    describe() {
+        console.log('Accounting Department ID: ' + this.id);
+    }
+
     // We can override methods from the base class
     addEmployee(name: string) {
         if (name === 'Ben') {
@@ -101,7 +110,7 @@ class AccountingDepartment extends Department {
 }
 
 const accounting = new AccountingDepartment('d2', []);
-// This is accesses like a normal property, NOT like a method
+// This is accessed like a normal property, NOT like a method
 accounting.addReport('Something went wrong...');
 console.log(accounting.mostRecentReport);
 accounting.mostRecentReport = 'Something went right!';
@@ -110,3 +119,4 @@ accounting.addEmployee('Ben');
 accounting.addEmployee('Manu');
 accounting.printReports();
 accounting.printEmployeeInformation();
+accounting.describe();
