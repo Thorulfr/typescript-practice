@@ -1,4 +1,5 @@
 // If you have any abstract methods in a class, you also have to make the entire class abstract.
+// Abstract classes CANNOT be instantiated themselves -- so you couldn't do 'x = new Department()'. You have to use inheriting classes to instantiate.
 abstract class Department {
     // private id: string;
     // private name: string;
@@ -63,6 +64,8 @@ it.printEmployeeInformation();
 
 class AccountingDepartment extends Department {
     private lastReport: string;
+    // Here, we're creating a property of type AccountingDepartment -- meaning it can only hold an instance of the type itself. We use this inside of the static getInstance method to tell if we already have an instance of this class.
+    private static instance: AccountingDepartment;
 
     // Getters allow us to make private information publicly readable (but not writeable). Private properties are not accessible using dot notation, but getters provide us an internal method to read and display information contained in private properties.
     get mostRecentReport() {
@@ -81,9 +84,21 @@ class AccountingDepartment extends Department {
         this.addReport(value);
     }
 
-    constructor(id: string, private reports: string[]) {
+    // By making the constructor private, we cannot create objects based on this class (so no 'new: AccountingDepartment'). This is used when creating singletons and ensuring that we can only have one instance of this class in our code. We then have to use a static method INSIDE the class to create our single instance of this class (since the private constructor is now only accessible from inside the class).
+    private constructor(id: string, private reports: string[]) {
         super(id, 'Accounting');
         this.lastReport = reports[0];
+    }
+
+    // This is how we create and return an instance of a private/singleton class.
+    static getInstance() {
+        // If an instance already exists, return it.
+        if (AccountingDepartment.instance) {
+            return this.instance;
+        }
+        // Otherwise, create a new instance and return it.
+        this.instance = new AccountingDepartment('d2', []);
+        return this.instance;
     }
 
     describe() {
@@ -109,7 +124,12 @@ class AccountingDepartment extends Department {
     }
 }
 
-const accounting = new AccountingDepartment('d2', []);
+// const accounting = new AccountingDepartment('d2', []);
+// This is how we store the instance of the private/singleton AccountingDepartment -- by calling the instantiation method we created in the class above.
+const accounting = AccountingDepartment.getInstance();
+const accounting2 = AccountingDepartment.getInstance();
+// Because of the method we created that will only allow for one instance of AccountingDepartment to be created, both accounting and accounting2 will return/store/point to the exact same instance.
+console.log(accounting, accounting2);
 // This is accessed like a normal property, NOT like a method
 accounting.addReport('Something went wrong...');
 console.log(accounting.mostRecentReport);
