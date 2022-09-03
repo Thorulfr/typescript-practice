@@ -15,6 +15,12 @@ class Department {
         // this.id = id;
     }
 
+    // Note: When you add static properties and/or methods, you can't access them outside of the class (meaning in non-static parts); you couldn't, for instance, in the constructor (using 'console.log(this.fiscalYear)'). You'd have to do 'console.log(Department.fiscalYear).'
+    static fiscalYear = 2020;
+    static createEmployee(name: string) {
+        return { name: name };
+    }
+
     describe(this: Department) {
         console.log(`Department (${this.id}): ${this.name}`);
     }
@@ -39,6 +45,10 @@ class ITDepartment extends Department {
         this.admins = admins;
     }
 }
+
+// You call static methods directly on the class without having to instantiate that class -- similar to Math.floor(), etc.
+const employee1 = Department.createEmployee('Max');
+console.log(employee1, Department.fiscalYear);
 
 const it = new ITDepartment('d1', ['Ben, Sterling']);
 it.describe();
@@ -100,4 +110,3 @@ accounting.addEmployee('Ben');
 accounting.addEmployee('Manu');
 accounting.printReports();
 accounting.printEmployeeInformation();
-// Test comment 2
