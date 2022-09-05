@@ -13,7 +13,9 @@ add = (n1: number, n2: number) => {
 };
 
 interface Named {
-    readonly name: string;
+    readonly name?: string;
+    // ? tells TS this property is optional
+    outputName?: string;
 }
 
 // Interfaces can extend other interfaces
@@ -24,7 +26,7 @@ interface Greetable extends Named {
 
 // While you can only inherit one CLASS, you can implement MULTIPLE interfaces
 class Person implements Greetable {
-    name: string;
+    name?: string;
     age: number;
     constructor(name: string, age: number) {
         this.name = name;
