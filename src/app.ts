@@ -1,142 +1,20 @@
-// If you have any abstract methods in a class, you also have to make the entire class abstract.
-// Abstract classes CANNOT be instantiated themselves -- so you couldn't do 'x = new Department()'. You have to use inheriting classes to instantiate.
-abstract class Department {
-    // private id: string;
-    // private name: string;
-    // public name: string; -> This is the opposite of the 'private' modifier; this is the default, however, so you don't need to explicitly set it
-    // This protects the employees array from being modified from outside of the class -- only methods inside the class can modify it
-    // private employees: string[] = [];
-
-    // Protected is like private in that it protects properties, but it allows classes that extend this class to access/use the property
-    protected employees: string[] = [];
-
-    // Constructor is a method tied to this class/any instance of this class that is executed when a new object is instantiated
-    constructor(protected readonly id: string, public name: string) {
-        // The parameters above are shorthand for adding properties without dually defining them up top and here
-        // this.name = n;
-        // this.id = id;
-    }
-
-    // Note: When you add static properties and/or methods, you can't access them outside of the class (meaning in non-static parts); you couldn't, for instance, in the constructor (using 'console.log(this.fiscalYear)'). You'd have to do 'console.log(Department.fiscalYear).'
-    static fiscalYear = 2020;
-    static createEmployee(name: string) {
-        return { name: name };
-    }
-
-    // If we leave this method empty and prefix it with 'abstract,' it REQUIRES all classes that extend this class to have a method called describe -- but since we leave this empty, we have to define the describe() method in each inheriting class. Essentially, this says "Hey, you HAVE to have a method called describe() but you have to define it yourself," forcing developers to create unique methods that meet the needs of each inheriting class.
-    // To create an abstract class, remove the curly brackets and add the return type the method should have.
-    abstract describe(this: Department): void;
-    // console.log(`Department (${this.id}): ${this.name}`);
-
-    addEmployee(employee: string) {
-        this.employees.push(employee);
-    }
-
-    printEmployeeInformation() {
-        this.employees.length === 1
-            ? console.log(this.employees.length + ' employee')
-            : console.log(this.employees.length + ' employees');
-        console.log(this.employees);
-    }
+// Simplified, an interface describes the structure of an object. It only exists in Typescript. Interfaces are essentially just used for type-checking. Whereas a class is an object factory that CAN be used to force types, you just use an interface to compare an object with the interface to ensure it matches all the required properties and methods.
+interface Person {
+    name: string;
+    age: number;
+    // For methods, we don't describe the method -- just the return type and types of arguments.
+    greet(phrase: string): void;
 }
 
-class ITDepartment extends Department {
-    admins: string[];
-    constructor(id: string, admins: string[]) {
-        // You have to call super before you're able to use the 'this' keyword
-        super(id, 'IT');
-        this.admins = admins;
-    }
-    describe() {
-        console.log('IT Department ID: ' + this.id);
-    }
-}
+// We can use our interface as a type. By doing so, we can use the interface to type-check any objects with this interface as a type.
+let user1: Person;
 
-// You call static methods directly on the class without having to instantiate that class -- similar to Math.floor(), etc.
-const employee1 = Department.createEmployee('Max');
-console.log(employee1, Department.fiscalYear);
+user1 = {
+    name: 'Ben',
+    age: 33,
+    greet(phrase: string) {
+        console.log(phrase + ' ' + this.name + '.');
+    },
+};
 
-const it = new ITDepartment('d1', ['Ben, Sterling']);
-it.describe();
-it.addEmployee('Max');
-it.addEmployee('Manu');
-it.printEmployeeInformation();
-
-class AccountingDepartment extends Department {
-    private lastReport: string;
-    // Here, we're creating a property of type AccountingDepartment -- meaning it can only hold an instance of the type itself. We use this inside of the static getInstance method to tell if we already have an instance of this class.
-    private static instance: AccountingDepartment;
-
-    // Getters allow us to make private information publicly readable (but not writeable). Private properties are not accessible using dot notation, but getters provide us an internal method to read and display information contained in private properties.
-    get mostRecentReport() {
-        if (this.lastReport) {
-            // A getter method has to return something.
-            return this.lastReport;
-        }
-        throw new Error('No report found.');
-    }
-
-    // Setters serve the same purpose as getters, just to write to properties (rather than read them). Setters have to have arguments.
-    set mostRecentReport(value: string) {
-        if (!value) {
-            throw new Error('Please pass in a valid report.');
-        }
-        this.addReport(value);
-    }
-
-    // By making the constructor private, we cannot create objects based on this class (so no 'new: AccountingDepartment'). This is used when creating singletons and ensuring that we can only have one instance of this class in our code. We then have to use a static method INSIDE the class to create our single instance of this class (since the private constructor is now only accessible from inside the class).
-    private constructor(id: string, private reports: string[]) {
-        super(id, 'Accounting');
-        this.lastReport = reports[0];
-    }
-
-    // This is how we create and return an instance of a private/singleton class.
-    static getInstance() {
-        // If an instance already exists, return it.
-        if (AccountingDepartment.instance) {
-            return this.instance;
-        }
-        // Otherwise, create a new instance and return it.
-        this.instance = new AccountingDepartment('d2', []);
-        return this.instance;
-    }
-
-    describe() {
-        console.log('Accounting Department ID: ' + this.id);
-    }
-
-    // We can override methods from the base class
-    addEmployee(name: string) {
-        if (name === 'Ben') {
-            return;
-        }
-        // This throws an error if 'employees' is private. Private properties are really only accessible from inside the class in which they are defined, not inside classes that inherit from that original class. If we change private to 'protected,' like we did, this now works
-        this.employees.push(name);
-    }
-
-    addReport(text: string) {
-        this.reports.push(text);
-        this.lastReport = text;
-    }
-
-    printReports() {
-        console.log(this.reports);
-    }
-}
-
-// const accounting = new AccountingDepartment('d2', []);
-// This is how we store the instance of the private/singleton AccountingDepartment -- by calling the instantiation method we created in the class above.
-const accounting = AccountingDepartment.getInstance();
-const accounting2 = AccountingDepartment.getInstance();
-// Because of the method we created that will only allow for one instance of AccountingDepartment to be created, both accounting and accounting2 will return/store/point to the exact same instance.
-console.log(accounting, accounting2);
-// This is accessed like a normal property, NOT like a method
-accounting.addReport('Something went wrong...');
-console.log(accounting.mostRecentReport);
-accounting.mostRecentReport = 'Something went right!';
-console.log(accounting.mostRecentReport);
-accounting.addEmployee('Ben');
-accounting.addEmployee('Manu');
-accounting.printReports();
-accounting.printEmployeeInformation();
-accounting.describe();
+user1.greet('Hi there. My name is');
