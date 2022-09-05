@@ -1,6 +1,11 @@
 // Simplified, an interface describes the structure of an object. It only exists in Typescript. Interfaces are essentially just used for type-checking. Whereas a class is an object factory that CAN be used to force types, you just use an interface to compare an object with the interface to ensure it matches all the required properties and methods.
-interface Greetable {
-    name: string;
+
+interface Named {
+    readonly name: string;
+}
+
+// Interfaces can extend other interfaces
+interface Greetable extends Named {
     // For methods, we don't describe the method -- just the return type and types of arguments.
     greet(phrase: string): void;
 }
