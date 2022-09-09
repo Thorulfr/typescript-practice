@@ -103,3 +103,11 @@ function moveAnimal(animal: Animal) {
 }
 
 moveAnimal({ type: 'bird', flyingSpeed: 10 });
+
+// const userInputEl = document.getElementById('user-input')!; --> The '!' tells TS that this won't be null
+// This is typecasting -- we're telling TS that what this document.getElementById method is grabbing WILL be an HTMLInputElement.
+// First option: const userInputEl = <HTMLInputElement>document.getElementById('user-input');
+// Second option (and they're equivalent) -- this one is provided because React uses its own <> syntax, so we can't use that to typecast:
+const userInputEl = document.getElementById('user-input') as HTMLInputElement;
+
+userInputEl.value = 'Hi there!';
