@@ -110,4 +110,25 @@ moveAnimal({ type: 'bird', flyingSpeed: 10 });
 // Second option (and they're equivalent) -- this one is provided because React uses its own <> syntax, so we can't use that to typecast:
 const userInputEl = document.getElementById('user-input') as HTMLInputElement;
 
+// If we want to add a runtime type-check:
+/* const userInputEl = document.getElementById('user-input');
+if (userInputEl) {
+    (userInputEl as HTMLInputElement).value = 'Hi there!';
+} */
+// This is just to show where you have to typecast if doing this sort of thing.
+
 userInputEl.value = 'Hi there!';
+
+// Index types
+interface ErrorContainer {
+    // {email: 'Not a valid email', username: 'Must start with a character'}
+    // This is essentially saying: 'I don't know the property name or count. I just know that any property I add to an object based on ErrorContainer must have a property name that can be interpreted as a string AND the value of that property must be a string.
+    [property: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+    email: 'Not a valid email!',
+    // 1: 'Not a valid email!' --> We could use one here because '1' CAN be interpreted as a string and, in fact, JS will do so.
+    username: 'Must start with a capital character!',
+    // Because we used the 'index' property, we could add as many properties to this object as we want, even though we don't explicitly define them in the interface, as long as those properties conform to the rules we set forth when creating the interface.
+};
