@@ -22,6 +22,9 @@ type Numeric = number | boolean;
 // Creating an intersection of two union types above causes TS to find anywhere the two types intersect; here, it's the 'number' type, so if you hover over Universal, you'll see it's of type 'number.'
 type Universal = Combinable & Numeric;
 
+// Function overloads allows us to take the same function and essentially return a specific type based on the parameters we're given. So, below, we're saying if we call add() with two numbers, we always get back a number -- likewise for two strings, even though in the function declaration we're saying the parameters can either be numbers OR strings. This lets us work around TS not knowing what the return type will be because we're giving it multiple options for parameter types. This allows us to, for instance, use add() with two strings and be able to use methods reserved for strings (like split() below), which we wouldn't be able to do otherwise (because TS can't be sure that the result will be a string).
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
 function add(a: Combinable, b: Combinable) {
     // This is called a 'typeguard' because it allows us to utilize the flexibility of union types and still ensure that the code runs correctly at runtime.
     if (typeof a === 'string' || typeof b === 'string') {
@@ -29,6 +32,10 @@ function add(a: Combinable, b: Combinable) {
     }
     return a + b;
 }
+
+const result = add('Ben', 'Holt');
+result.split(' ');
+console.log(result);
 
 type UnknownEmployee = Employee | Admin;
 
