@@ -45,6 +45,12 @@ const fetchedUserData = {
 // We can put '?' before objects or properties that may or may not exist -- for instance, if we were using a fetch request to get the fetchedUserData, TS would not be able to tell if the properties/objects/methods exist or not, since TS cannot read code from outside sources -- to tell TS 'Hey, check for 'job'; if it exists, check for 'title'; if that exists, console.log it here. In this example, TS is complaining because it knows for a FACT that 'job' does not exist, since we've defined it here locally and commented out 'job'; but if this were coming from an outside source, we'd be totally fine (and, in fact, in this case, the code still compiles and runs without a runtime error.)
 console.log(fetchedUserData?.job?.title);
 
+// Nullish coalescing
+const userInput = '';
+// The double ?? means that if userInput is TRULY null or undefined, we fallback to the default -- DEFAULT, in this case. The standard method (using the || operator) would treat an empty string as falsy, even though we may want to keep that empty string.
+const storedData = userInput ?? 'DEFAULT';
+console.log(storedData);
+
 type UnknownEmployee = Employee | Admin;
 
 function printEmployeeInformation(employee: UnknownEmployee) {
