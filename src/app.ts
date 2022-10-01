@@ -34,3 +34,23 @@ const mergedObj3 = merge<{ name: string; hobbies: string[] }, { age: number }>(
 
 // Here, TS doesn't give us any errors/grief when referencing the 'age' property because TS correctly understands that mergedObj was created by a function that HAS an age property.
 console.log(mergedObj.age);
+
+// Here, we're creating an interface that simply is used to ensure an object that has a length property that yields a number.
+interface Lengthy {
+    length: number;
+}
+
+// Here, we're simply getting more specific by using a tuple to say that countAndDescribe will return exactly two elements, where the first will be of type T and the second will be of type string.
+function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
+    // By using Lengthy as a constraint, we're just ensuring that whatever is passed in as an element has a length property -- and both strings and arrays have length properties.
+    let descriptionText =
+        element.length > 0
+            ? element.length === 1
+                ? 'Received 1 element'
+                : `Received ${element.length} elements.`
+            : 'Received no value.';
+    return [element, descriptionText];
+}
+
+console.log(countAndDescribe('Hi there!'));
+console.log(countAndDescribe([]));
