@@ -13,7 +13,8 @@ promise.then((data) => {
  */
 
 // By using a generic, here, we are not giving TS specific types in the definition; rather, we are saying that we will PROVIDE specific types in the parameters (TS just knows that there will be two types). That is to say, the types given in the function definition are not set in stone; rather, they are set dynamically when we CALL the function.
-function merge<T extends object, U>(objA: T, objB: U) {
+function merge<T extends object, U extends object>(objA: T, objB: U) {
+    // The 'extends' keyword is how we add constraints to our generics -- by saying 'extends object,' we tell TS that we can accept any object as an argument but ONLY an object!
     return Object.assign(objA, objB);
 }
 
