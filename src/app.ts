@@ -93,3 +93,26 @@ textStorage.removeItem('Manu');
 console.log(textStorage.getItems());
 
 const numberStorage = new DataStorage<number>();
+
+interface CourseGoal {
+    title: string;
+    description: string;
+    completeUntil: Date;
+}
+
+function createCourseGoal(
+    title: string,
+    description: string,
+    date: Date
+): CourseGoal {
+    // This tells TS that this is an object that will hold a CourseGoal in the end but is initially an object in which all of the properties defined by the interface are optional. (You can see this by hovering over 'Partial' below.)
+    // This is beneficial because we can construct the courseGoal piece by piece and not run into errors, rather than needing to do it all at once.
+    let courseGoal: Partial<CourseGoal> = {};
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date;
+    return courseGoal as CourseGoal; // We use typecasting here to convert the partial into the actual, full type (otherwise we'd be returning a Partial<CourseGoal>)
+}
+
+const names: Readonly<string[]> = ['Ben', 'Max'];
+// names.push('Manu'); This will give us an error because we declared 'names' to be read-only!
