@@ -17,6 +17,7 @@ function WithTemplate(template: string, hookId: string) {
     // _ is a convention for unused parameters, telling TS that we don't need that parameter
     // return function (_: Function) {
     return function (constructor: any) {
+        console.log('Rendering template...');
         const hookEl = document.getElementById(hookId);
         const p = new constructor();
         if (hookEl) {
@@ -27,6 +28,8 @@ function WithTemplate(template: string, hookId: string) {
 }
 
 // @Logger // This is how you call a non-factory decorator
+// When you add multiple decorators, they run in bottom-up order; however, the factory decorators run in top-down order (that is, the order they're created/defined in JS)
+@Logger('Logging...')
 @WithTemplate('<h1>My Person</h1>', 'app') // When you want to run a factory decorator, you need to call it with ()
 class Person {
     name = 'Ben';
