@@ -41,3 +41,34 @@ class Person {
 
 const person = new Person();
 console.log(person);
+
+// ---
+
+function Log(target: any, propertyName: string | Symbol) {
+    console.log('Property decorator!');
+    console.log(target, propertyName);
+}
+
+class Product {
+    // If you add a decorator to a property, the decorator receives two arguments: the target as the first and the property name as the second
+    @Log
+    title: string;
+    private _price: number; // The underscore is a convention for private properties. It's not enforced by TS, but it's a convention that's used by many developers
+
+    set price(val: number) {
+        if (val > 0) {
+            this._price = val;
+        } else {
+            throw new Error('Invalid price - should be positive!');
+        }
+    }
+
+    constructor(title: string, price: number) {
+        this.title = title;
+        this._price = price;
+    }
+
+    getPriceWithTax(tax: number) {
+        return this._price * (1 + tax);
+    }
+}
