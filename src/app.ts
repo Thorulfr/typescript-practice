@@ -55,6 +55,7 @@ function Log(target: any, propertyName: string | Symbol) {
     console.log(target, propertyName);
 }
 
+// On accessor and method decorators, you can return something that is used. For example, you can return a new descriptor, which will replace the original descriptor. For property decorators, you can't return anything, because the property is already defined.
 function Log2(target: any, name: string, descriptor: PropertyDescriptor) {
     console.log('Accessor decorator!');
     console.log(target);
@@ -108,3 +109,29 @@ class Product {
 
 const p1 = new Product('Book', 19);
 const p2 = new Product('Book 2', 29);
+
+function Autobind(_: any, _2: string | Symbol, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    const adjustedDescriptor: PropertyDescriptor = {
+        configurable: true,
+        enumerable: false,
+        get() {
+            const boundFn = originalMethod.bind(this);
+            return boundFn;
+        },
+    };
+    return adjustedDescriptor;
+}
+
+class Printer {
+    message = 'This works!';
+
+    @Autobind
+    showMessage() {
+        console.log(this.message);
+    }
+}
+
+const p = new Printer();
+const buttonEl = document.querySelector('button')!;
+buttonEl.addEventListener('click', p.showMessage);
