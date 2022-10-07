@@ -135,3 +135,41 @@ class Printer {
 const p = new Printer();
 const buttonEl = document.querySelector('button')!;
 buttonEl.addEventListener('click', p.showMessage);
+
+// ---
+
+function Required() {}
+
+function PositiveNumber() {}
+
+function validate(obj: any) {}
+class Course {
+    @Required
+    title: string;
+    @PositiveNumber
+    price: number;
+
+    constructor(t: string, p: number) {
+        this.title = t;
+        this.price = p;
+    }
+}
+
+const courseFormEl = document.querySelector('form')!;
+courseFormEl.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const titleEl = document.getElementById('title')! as HTMLInputElement;
+    const priceEl = document.getElementById('price')! as HTMLInputElement;
+
+    const title = titleEl.value;
+    // The + converts the string to a number
+    const price = +priceEl.value;
+
+    const createdCourse = new Course(title, price);
+    if (!validate(createdCourse)) {
+        alert('Invalid input, please try again!');
+        return;
+    }
+
+    console.log(createdCourse);
+});
