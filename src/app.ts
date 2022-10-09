@@ -1,3 +1,17 @@
+// Autobind decorator
+function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    const adjustedDescriptor: PropertyDescriptor = {
+        configurable: true,
+        get() {
+            const boundFn = originalMethod.bind(this);
+            return boundFn;
+        },
+    };
+    return adjustedDescriptor;
+}
+
+// Project Input class
 class ProjectInput {
     templateElement: HTMLTemplateElement;
     hostElement: HTMLDivElement;
@@ -43,6 +57,7 @@ class ProjectInput {
     }
 
     // Handler for the submit event
+    @autobind
     private submitHandler(event: Event) {
         event.preventDefault();
         console.log(this.titleInputElement.value);
@@ -50,7 +65,7 @@ class ProjectInput {
 
     // Add event listener to the form
     private configure() {
-        this.element.addEventListener('submit', this.submitHandler.bind(this));
+        this.element.addEventListener('submit', this.submitHandler);
     }
 
     // Rendering logic
